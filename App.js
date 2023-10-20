@@ -46,9 +46,14 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+                headerStyle: { backgroundColor: GlobalStyles.colors.primary500},
+                headerTintColor: 'white'}}>
           <Stack.Screen name="ExpensesOverview" component={BottomTabNavigation} options={{headerShown:false}}></Stack.Screen>
-          <Stack.Screen name="ManageExpense" component={ManageExpenseScreen}></Stack.Screen>
+          <Stack.Screen name="ManageExpense" component={ManageExpenseScreen} options={{
+              title: 'Manage Expense',
+              presentation: 'modal'
+          }}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </>
