@@ -8,18 +8,23 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from '@react-navigation/stack';
 import ManageExpenseScreen from "./screens/ManageExpenseScreen";
 import { GlobalStyles } from "./constants/styles";
+import IconButton from "./components/UI/IconButton";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export default function App() {
   function BottomTabNavigation() {
     return (
-      <Tab.Navigator screenOptions={{
+      <Tab.Navigator screenOptions={({navigation}) => ({
         headerStyle: { backgroundColor: GlobalStyles.colors.primary500},
         headerTintColor: 'white',
         tabBarStyle: { backgroundColor:GlobalStyles.colors.primary500},
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        tabBarInactiveTintColor: GlobalStyles.colors.primary50
-      }}>
+        tabBarInactiveTintColor: GlobalStyles.colors.primary50,
+        headerRight: ({tintColor}) => {
+            return <IconButton icon='add' color={tintColor} onPress={()=>{navigation.navigate('ManageExpense')}}/>
+        }
+        })}
+      >
         <Tab.Screen name="AllExpenses" component={AllExpensesScreen} options={{
           title: 'All Expenses',
           tabBarLabel: 'All Expenses',
