@@ -51,7 +51,6 @@ export default function App() {
                 headerTintColor: 'white'}}>
           <Stack.Screen name="ExpensesOverview" component={BottomTabNavigation} options={{headerShown:false}}></Stack.Screen>
           <Stack.Screen name="ManageExpense" component={ManageExpenseScreen} options={{
-              title: 'Manage Expense',
               presentation: 'modal'
           }}></Stack.Screen>
         </Stack.Navigator>
