@@ -5,7 +5,6 @@ import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 function AllExpensesScreen() {
     return (
         <View style={styles.container}>
-            <Text>All Expenses</Text>
             <ExpensesOutput expensesPeriodName="Total"/>
         </View>
     )
