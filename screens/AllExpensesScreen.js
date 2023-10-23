@@ -8,7 +8,7 @@ function AllExpensesScreen() {
     const expensesCtx = useContext(ExpensesContext)
     return (
         <View style={styles.container}>
-            <ExpensesOutput expenses={expensesCtx.expenses} expensesPeriodName="Total"/>
+            <ExpensesOutput expenses={expensesCtx.expenses} expensesPeriodName="Total" fallbackText="No registred expenses found!"/>
         </View>
     )
 }
