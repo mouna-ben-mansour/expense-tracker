@@ -12,10 +12,13 @@ import IconButton from "./components/UI/IconButton";
 import ExpensesContextProvider from "./store/expenses-context";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
+import AuthContextProvider, {AuthContext} from "./store/auth-context";
+import {useContext} from "react";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function BottomTabNavigation() {
+    const authCtx = useContext(AuthContext);
     return (
         <Tab.Navigator screenOptions={({navigation}) => ({
             headerStyle: { backgroundColor: GlobalStyles.colors.primary500},
@@ -24,7 +27,13 @@ function BottomTabNavigation() {
             tabBarActiveTintColor: GlobalStyles.colors.accent500,
             tabBarInactiveTintColor: GlobalStyles.colors.primary50,
             headerRight: ({tintColor}) => {
-                return <IconButton icon='add' color={tintColor} onPress={()=>{navigation.navigate('ManageExpense')}}/>
+                return (
+                    <View style={styles.buttonsContainer}>
+                        <IconButton icon='add' color={tintColor} onPress={()=>{navigation.navigate('ManageExpense')}}/>
+                        <IconButton icon='exit' color={tintColor} onPress={authCtx.logout}/>
+                    </View>
+
+                )
             }
         })}
         >
@@ -51,7 +60,6 @@ function AuthenticatedStack() {
             headerStyle: { backgroundColor: GlobalStyles.colors.primary500},
             headerTintColor: 'white'}}
         >
-
             <Stack.Screen name="ExpensesOverview" component={BottomTabNavigation} options={{headerShown:false}}></Stack.Screen>
             <Stack.Screen name="ManageExpense" component={ManageExpenseScreen} options={{
                 presentation: 'modal'
@@ -75,25 +83,38 @@ function AuthStack() {
         </Stack.Navigator>
     );
 }
+function Navigation(){
+    const authCtx = useContext(AuthContext);
+    return (
+        <ExpensesContextProvider>
+            <NavigationContainer>
+                { !authCtx.isAuthenticated && <AuthStack /> }
+                { authCtx.isAuthenticated && <AuthenticatedStack /> }
+            </NavigationContainer>
+        </ExpensesContextProvider>
+    );
+}
 export default function App() {
 
-  return (
-    <>
-      <StatusBar style="light" />
-        <ExpensesContextProvider>
-          <NavigationContainer>
-              <AuthStack />
-          </NavigationContainer>
-        </ExpensesContextProvider>
-    </>
-  );
+    return (
+        <>
+            <StatusBar style="light" />
+            <AuthContextProvider>
+                <Navigation/>
+            </AuthContextProvider>
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
   },
+    buttonsContainer: {
+        flexDirection: 'row',
+        gap: 10
+    }
 });
