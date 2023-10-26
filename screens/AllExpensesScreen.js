@@ -1,5 +1,4 @@
-import {StyleSheet,View,Text} from "react-native";
-import ExpensesList from "../components/ExpensesOutput/ExpensesList";
+import {StyleSheet,View} from "react-native";
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import {useContext} from "react";
 import {ExpensesContext} from "../store/expenses-context";

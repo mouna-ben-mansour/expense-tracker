@@ -1,14 +1,22 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BACKEND_URL = 'https://expense-tracker-app-1d31b-default-rtdb.europe-west1.firebasedatabase.app';
+
+async function fetchToken(){
+    return await AsyncStorage.getItem('token');
+}
+
 export async function storeExpense(expenseData) {
-   const response = await axios.post(BACKEND_URL +'/expenses.json', expenseData);
-   const id = response.data.name; // auto generated id by firebase
+    const token = await fetchToken();
+    const response = await axios.post(BACKEND_URL +'/expenses.json?auth=' + token, expenseData);
+    const id = response.data.name; // auto generated id by firebase
     return id;
 }
 
 export async function fetchExpenses() {
-    const response = await axios.get(BACKEND_URL +'/expenses.json');
+    const token = await fetchToken();
+    const response = await axios.get(BACKEND_URL +'/expenses.json?auth=' + token);
     const expenses = [];
     for (const key in response.data) {
         const expenseObj = {
@@ -22,9 +30,11 @@ export async function fetchExpenses() {
     return expenses;
 }
 
-export function updateExpense(id, expenseData){
-    return axios.put(BACKEND_URL + `/expenses/${id}.json`, expenseData);
+export async function updateExpense(id, expenseData){
+    const token = await fetchToken();
+    return axios.put(BACKEND_URL + `/expenses/${id}.json?auth=${token}`, expenseData);
 }
-export  function deleteExpense(id){
-    return axios.delete(BACKEND_URL + `/expenses/${id}.json`);
+export async function deleteExpense(id){
+    const token = await fetchToken();
+    return axios.delete(BACKEND_URL + `/expenses/${id}.json?auth=${token}`);
 }
